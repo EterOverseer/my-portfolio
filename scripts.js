@@ -346,14 +346,17 @@ const contactData = {
   }
 };
 
+let _countdownTimer = null;
+
 function openContact(platform) {
   const data = contactData[platform];
   if (!data) return;
 
-  const logoEl = document.getElementById('co-logo');
-  const nameEl = document.getElementById('co-name');
-  const labelEl = document.getElementById('co-label');
-  const overlay = document.getElementById('contact-overlay');
+  const logoEl   = document.getElementById('co-logo');
+  const nameEl   = document.getElementById('co-name');
+  const labelEl  = document.getElementById('co-label');
+  const overlay  = document.getElementById('contact-overlay');
+  const waitEl   = overlay.querySelector('.co-waiting');
 
   // Set content
   logoEl.innerHTML = data.logo;
@@ -365,28 +368,56 @@ function openContact(platform) {
   labelEl.textContent = data.label;
   document.getElementById('co-detail').textContent = data.detail || '';
 
+  // Reset countdown UI
+  waitEl.innerHTML = `Opening <strong id="co-platform-word">${data.name}</strong> in <span id="co-countdown" style="font-size:1.4rem;font-weight:800;color:${data.color};min-width:1.2ch;display:inline-block;text-align:center;">3</span><span class="dots"><span></span><span></span><span></span></span>`;
+
+  // Push a history state so browser back button works
+  history.pushState({ contact: platform }, '', '#contact');
+
   // Trigger sweep open
   overlay.classList.add('open');
 
-  // Open app after sweep animation
-  if (data.url) {
-    setTimeout(() => {
-      window.open(data.url, '_blank');
-    }, 520);
-  }
+  // Countdown 3 → 2 → 1 → open
+  let count = 3;
+  clearInterval(_countdownTimer);
+  _countdownTimer = setInterval(() => {
+    count--;
+    const cdEl = document.getElementById('co-countdown');
+    if (cdEl) cdEl.textContent = count;
+    if (count <= 0) {
+      clearInterval(_countdownTimer);
+      if (data.url) window.open(data.url, '_blank');
+      // Auto-close overlay after redirect
+      setTimeout(closeContactOverlay, 600);
+    }
+  }, 1000);
 
   // Keyboard close
   document.addEventListener('keydown', _escClose);
 }
 
 function closeContactOverlay() {
+  clearInterval(_countdownTimer);
   document.getElementById('contact-overlay').classList.remove('open');
   document.removeEventListener('keydown', _escClose);
+  // Clean up history state if still on #contact
+  if (location.hash === '#contact') history.back();
 }
 
 function _escClose(e) {
   if (e.key === 'Escape') closeContactOverlay();
 }
+
+// Browser back button → close overlay and return to home
+window.addEventListener('popstate', (e) => {
+  const overlay = document.getElementById('contact-overlay');
+  if (overlay && overlay.classList.contains('open')) {
+    clearInterval(_countdownTimer);
+    overlay.classList.remove('open');
+    document.removeEventListener('keydown', _escClose);
+    navigate('home');
+  }
+});
 
 /* ══════════════════════════════════════════
    INIT

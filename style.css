@@ -538,8 +538,10 @@ nav {
 }
 .co-waiting {
   font-family: 'Fira Code', monospace; font-size: 0.8rem;
-  color: var(--text2); letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--text2); letter-spacing: 0.15em; text-transform: uppercase;
   display: flex; align-items: center; gap: 0.6rem;
+  flex-wrap: wrap; justify-content: center; text-align: center;
+  max-width: 320px;
 }
 .co-waiting .dots span {
   display: inline-block; width: 5px; height: 5px; border-radius: 50%;
