@@ -1,0 +1,596 @@
+/* ─── CSS Variables ─── */
+:root {
+  --bg: #f5f8ff;
+  --bg2: #eaf1ff;
+  --surface: #ffffff;
+  --surface2: #ddeeff;
+  --primary: #1560bd;
+  --accent: #38b6ff;
+  --accent2: #0099e6;
+  --text: #0d1b2a;
+  --text2: #3a5070;
+  --border: rgba(21,96,189,0.18);
+  --glow: rgba(56,182,255,0.25);
+  --nav-bg: rgba(245,248,255,0.85);
+  --card-bg: #ffffff;
+  --card-border: rgba(21,96,189,0.13);
+  --btn-bg: #1560bd;
+  --btn-text: #fff;
+  --tag-bg: rgba(56,182,255,0.15);
+  --tag-text: #1560bd;
+  --hero-overlay: linear-gradient(135deg,#eaf1ff 60%,#c2e4ff 100%);
+  --transition: 0.35s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"] {
+  --bg: #050f07;
+  --bg2: #081408;
+  --surface: #0b1a0d;
+  --surface2: #0f2211;
+  --primary: #00ff88;
+  --accent: #39ff14;
+  --accent2: #00cc6a;
+  --text: #d4ffd4;
+  --text2: #7abf7a;
+  --border: rgba(0,255,136,0.18);
+  --glow: rgba(57,255,20,0.22);
+  --nav-bg: rgba(5,15,7,0.88);
+  --card-bg: #0b1a0d;
+  --card-border: rgba(0,255,136,0.15);
+  --btn-bg: #00ff88;
+  --btn-text: #050f07;
+  --tag-bg: rgba(57,255,20,0.12);
+  --tag-text: #39ff14;
+  --hero-overlay: linear-gradient(135deg,#050f07 60%,#081f0c 100%);
+}
+
+/* ─── Reset & Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Thai', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background var(--transition), color var(--transition);
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; }
+
+/* ─── Noise overlay ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; opacity: 0.5;
+}
+
+/* ─── Transition Overlay ─── */
+#page-transition {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s;
+}
+#page-transition.active { opacity: 1; pointer-events: all; }
+#page-transition .logo-anim {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3rem;
+  color: var(--primary);
+  letter-spacing: 0.12em;
+  animation: logoPulse 1s ease-in-out infinite alternate;
+}
+#page-transition .name-anim {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.95rem;
+  color: var(--text2); margin-top: 0.5rem; letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+@keyframes logoPulse {
+  from { text-shadow: 0 0 10px var(--glow); }
+  to   { text-shadow: 0 0 40px var(--glow), 0 0 80px var(--glow); }
+}
+
+/* ─── Navbar ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--nav-bg);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background var(--transition), border-color var(--transition);
+}
+.nav-logo {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.15rem;
+  color: var(--primary); letter-spacing: 0.08em;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.nav-logo span { color: var(--text); }
+.nav-links { display: flex; align-items: center; gap: 0.25rem; }
+.nav-links button {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.85rem;
+  color: var(--text2); padding: 0.4rem 0.9rem; border-radius: 6px;
+  transition: color var(--transition), background var(--transition);
+  letter-spacing: 0.05em;
+  position: relative;
+}
+.nav-links button:hover, .nav-links button.active {
+  color: var(--primary);
+  background: var(--tag-bg);
+}
+.nav-links button.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%);
+  width: 60%; height: 2px; background: var(--primary); border-radius: 2px;
+}
+.nav-controls { display: flex; align-items: center; gap: 0.5rem; }
+.ctrl-btn {
+  font-family: 'Fira Code', monospace; font-size: 0.72rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 0.3rem 0.7rem; color: var(--text2);
+  background: var(--surface); transition: all var(--transition);
+  letter-spacing: 0.05em;
+}
+.ctrl-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--tag-bg); }
+.ctrl-btn.active { background: var(--btn-bg); color: var(--btn-text); border-color: transparent; }
+
+/* ─── Pages ─── */
+.page { display: none; min-height: 100vh; padding-top: 60px; }
+.page.active { display: block; }
+
+/* ─── HOME ─── */
+#home {
+  display: none; min-height: 100vh;
+  padding-top: 60px;
+  background: var(--hero-overlay);
+  position: relative; overflow: hidden;
+}
+#home.active { display: flex; }
+.home-inner {
+  width: 100%; max-width: 1200px; margin: 0 auto;
+  padding: 4rem 2rem 2rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2rem; align-items: center;
+}
+.home-left { position: relative; }
+.vibe-tag {
+  font-family: 'Fira Code', monospace; font-size: 0.75rem;
+  color: var(--accent2); letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.vibe-tag::before {
+  content: ''; display: inline-block; width: 20px; height: 1px;
+  background: var(--accent2);
+}
+.main-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  
+  /* ใช้ Font เดิมที่คุณชอบ แต่เพิ่มความหนาและระยะห่าง */
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 3.5rem; /* ขนาดสะใจเหมือนเดิม */
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+
+  /* ใส่สี Gradient ให้ดูมีมิติ */
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* เพิ่มเงาจางๆ ให้ตัวหนังสือลอยออกมา */
+  filter: drop-shadow(0 4px 12px rgba(21, 96, 189, 0.2));
+  
+  margin-bottom: 0.5rem;
+}
+.typed-cursor {
+  display: inline-block;
+  width: 12px;
+  height: 3.2rem; /* ให้สูงเกือบเท่าตัวหนังสือ */
+  background-color: var(--accent);
+  margin-left: 8px;
+  border-radius: 2px;
+  animation: cursorBlink 1s infinite;
+  vertical-align: middle;
+}
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.status-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  margin-top: 1rem; padding: 0.4rem 1rem;
+  border: 1px solid var(--border); border-radius: 20px;
+  background: var(--surface);
+  font-family: 'Fira Code', monospace; font-size: 0.78rem;
+  color: var(--text2);
+}
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,0.2)} 50%{box-shadow:0 0 0 6px rgba(34,197,94,0.08)} }
+.home-desc {
+  margin-top: 1.5rem;
+  font-size: 0.93rem; color: var(--text2); line-height: 1.7;
+  max-width: 460px;
+}
+.contact-section { margin-top: 2.5rem; }
+.contact-label {
+  font-family: 'Fira Code', monospace; font-size: 0.7rem;
+  color: var(--text2); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.contact-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.contact-btn {
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.5rem 1rem; border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.8rem; font-weight: 500;
+  color: var(--text2);
+  transition: all 0.25s;
+  position: relative; overflow: hidden;
+}
+.contact-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--primary); opacity: 0; transition: opacity 0.25s;
+}
+.contact-btn:hover { color: var(--btn-text); border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 20px var(--glow); }
+.contact-btn:hover::before { opacity: 1; }
+.contact-btn span { position: relative; z-index: 1; }
+.contact-btn .icon { position: relative; z-index: 1; font-size: 1rem; }
+.home-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 1.5rem;
+}
+.avatar-wrap {
+  width: 260px; height: 260px; position: relative;
+}
+.avatar-ring {
+  position: absolute; inset: -12px;
+  border: 2px solid var(--border);
+  border-radius: 50%; animation: spin 12s linear infinite;
+  border-top-color: var(--primary);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.avatar-inner {
+  width: 100%; height: 100%; border-radius: 50%;
+  background: var(--surface2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 5rem;
+  color: var(--primary);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.skill-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: flex-end; max-width: 300px; }
+.chip {
+  font-family: 'Fira Code', monospace; font-size: 0.68rem;
+  padding: 0.3rem 0.7rem; border-radius: 20px;
+  background: var(--tag-bg); color: var(--tag-text);
+  border: 1px solid var(--border); letter-spacing: 0.05em;
+}
+.chip-intern {
+  background: rgba(255, 100, 160, 0.12);
+  color: #ff64a0;
+  border: 1px solid rgba(255, 100, 160, 0.35);
+  font-weight: 600;
+  box-shadow: 0 0 0 1px rgba(255,100,160,0.15);
+}
+
+/* ─── WORKS ─── */
+#works { display: none; padding-top: 60px; min-height: 100vh; }
+#works.active { display: block; }
+.section-inner { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+.section-header { margin-bottom: 3rem; }
+.section-eyebrow {
+  font-family: 'Fira Code', monospace; font-size: 0.72rem;
+  color: var(--accent2); letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.section-eyebrow::before { content:''; width:20px; height:1px; background:var(--accent2); display:inline-block; }
+.section-title {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--text);
+}
+.works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+.work-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 1.8rem;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.work-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px var(--glow); }
+.work-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.work-tag {
+  font-family: 'Fira Code', monospace; font-size: 0.68rem;
+  padding: 0.25rem 0.6rem; border-radius: 20px;
+  background: var(--tag-bg); color: var(--tag-text);
+  border: 1px solid var(--border);
+  display: inline-block; margin-bottom: 1rem;
+}
+.work-title {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.35rem;
+  color: var(--text); margin-bottom: 0.5rem;
+}
+.work-sub {
+  font-size: 0.82rem; color: var(--text2);
+  font-family: 'Fira Code', monospace; margin-bottom: 1rem;
+}
+.work-desc { font-size: 0.88rem; color: var(--text2); line-height: 1.65; margin-bottom: 1.5rem; }
+.work-meta { display: flex; flex-direction: column; gap: 0.4rem; }
+.work-date-row {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--text2);
+}
+.work-date-row .dot { color: var(--primary); }
+.counter-badge {
+  margin-top: 0.8rem; display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0.9rem; border-radius: 8px;
+  background: var(--tag-bg); border: 1px solid var(--border);
+  font-family: 'Fira Code', monospace; font-size: 0.75rem;
+  color: var(--tag-text);
+}
+.counter-num { font-weight: 700; font-size: 0.9rem; }
+
+/* ─── ABOUT ─── */
+#about { display: none; padding-top: 60px; min-height: 100vh; }
+#about.active { display: block; }
+.about-inner { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+.about-grid { display: grid; grid-template-columns: 300px 1fr; gap: 3rem; align-items: start; }
+.about-left { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; }
+.profile-card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 20px; padding: 2rem; text-align: center; width: 100%;
+  position: relative; overflow: hidden;
+}
+.profile-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.profile-avatar {
+  width: 100px; height: 100px; border-radius: 50%;
+  background: var(--surface2); border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; margin: 0 auto 1rem;
+}
+.profile-name {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.1rem;
+  color: var(--text); margin-bottom: 0.3rem;
+}
+.profile-name-th {
+  font-size: 0.8rem; color: var(--text2);
+  font-family: 'Noto Sans Thai', sans-serif; margin-bottom: 0.8rem;
+}
+.profile-badge {
+  font-family: 'Fira Code', monospace; font-size: 0.7rem;
+  padding: 0.3rem 0.8rem; border-radius: 20px;
+  background: var(--tag-bg); color: var(--tag-text);
+  border: 1px solid var(--border);
+}
+.profile-logos {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;
+  margin-top: 1rem;
+}
+.tech-logo {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--surface2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; transition: transform 0.2s, box-shadow 0.2s;
+  cursor: default;
+}
+.tech-logo:hover { transform: scale(1.15); box-shadow: 0 4px 16px var(--glow); }
+.free-source-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 1.4rem; border-radius: 10px;
+  background: var(--btn-bg); color: var(--btn-text);
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.82rem;
+  font-weight: 700; letter-spacing: 0.02em;
+  transition: all 0.25s; box-shadow: 0 4px 20px var(--glow);
+  width: 100%;  justify-content: center;
+}
+.free-source-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--glow); }
+.about-right {}
+.about-section { margin-bottom: 2rem; }
+.about-section-label {
+  font-family: 'Fira Code', monospace; font-size: 0.7rem;
+  color: var(--accent2); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.about-section-label::before { content:''; width:12px; height:1px; background:var(--accent2); display:inline-block; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.info-item {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 10px; padding: 0.8rem 1rem;
+}
+.info-key { font-family: 'Fira Code', monospace; font-size: 0.65rem; color: var(--text2); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.3rem; }
+.info-val { font-size: 0.88rem; color: var(--text); font-weight: 600; }
+.skills-wrap { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.skill-tag {
+  font-family: 'Fira Code', monospace; font-size: 0.72rem;
+  padding: 0.3rem 0.8rem; border-radius: 20px;
+  background: var(--tag-bg); color: var(--tag-text);
+  border: 1px solid var(--border); transition: transform 0.2s, box-shadow 0.2s;
+}
+.skill-tag:hover { transform: translateY(-2px); box-shadow: 0 4px 12px var(--glow); }
+
+/* ─── FREE SOURCE ─── */
+#freesource { display: none; padding-top: 60px; min-height: 100vh; }
+#freesource.active { display: block; }
+.fs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+.fs-card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 14px; padding: 1.5rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative; overflow: hidden;
+}
+.fs-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px var(--glow); }
+.fs-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.fs-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+.fs-title {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1rem;
+  color: var(--text); margin-bottom: 0.4rem;
+}
+.fs-desc { font-size: 0.82rem; color: var(--text2); line-height: 1.6; margin-bottom: 1rem; }
+.fs-btn {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.75rem; font-weight: 600;
+  padding: 0.4rem 0.9rem; border-radius: 7px;
+  border: 1px solid var(--border); color: var(--tag-text);
+  background: var(--tag-bg); transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.fs-btn:hover { background: var(--btn-bg); color: var(--btn-text); border-color: transparent; }
+.coming-badge {
+  font-family: 'Fira Code', monospace; font-size: 0.62rem;
+  padding: 0.2rem 0.5rem; border-radius: 4px;
+  background: rgba(255,180,0,0.15); color: #ffb400;
+  border: 1px solid rgba(255,180,0,0.3);
+  margin-left: 0.4rem;
+}
+
+/* ─── Responsive ─── */
+@media(max-width: 768px) {
+  .home-inner { grid-template-columns: 1fr; }
+  .home-right { align-items: center; }
+  .about-grid { grid-template-columns: 1fr; }
+  .info-grid { grid-template-columns: 1fr; }
+  .nav-links button { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+/* ─── page-transition fonts fix ─── */
+#page-transition .logo-anim { font-family: 'Plus Jakarta Sans', sans-serif; }
+#page-transition .name-anim { font-family: 'Fira Code', monospace; }
+
+/* ══════════════════════════════════════════
+   CONTACT OVERLAY  — diagonal wipe top-left → bottom-right
+══════════════════════════════════════════ */
+#contact-overlay {
+  position: fixed; inset: 0; z-index: 8000;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* The sweeping panel */
+#contact-overlay .sweep {
+  position: absolute;
+  /* start: a thin sliver at top-left */
+  top: -100%; left: -100%;
+  width: 300%; height: 300%;
+  background: var(--bg);
+  transform: rotate(-12deg) translateY(-100%);
+  transition: transform 0.52s cubic-bezier(.7,0,.3,1);
+  will-change: transform;
+}
+#contact-overlay.open { pointer-events: all; }
+#contact-overlay.open .sweep {
+  transform: rotate(-12deg) translateY(0%);
+}
+/* Content card — centered */
+#contact-overlay .co-card {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2.5rem;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.3s 0.38s, transform 0.3s 0.38s;
+}
+#contact-overlay.open .co-card {
+  opacity: 1; transform: translateY(0);
+}
+.co-platform-logo {
+  width: 96px; height: 96px; border-radius: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.5rem;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 8px 40px var(--glow);
+  animation: logoBounce 1.4s cubic-bezier(.36,.07,.19,.97) infinite;
+}
+@keyframes logoBounce {
+  0%,100% { transform: translateY(0) scale(1); }
+  45%     { transform: translateY(-10px) scale(1.04); }
+  65%     { transform: translateY(-4px) scale(1.01); }
+}
+.co-waiting {
+  font-family: 'Fira Code', monospace; font-size: 0.8rem;
+  color: var(--text2); letter-spacing: 0.25em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.co-waiting .dots span {
+  display: inline-block; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--primary); margin: 0 2px;
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+.co-waiting .dots span:nth-child(2) { animation-delay: 0.2s; }
+.co-waiting .dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse { 0%,100%{opacity:0.2;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
+.co-platform-name {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800;
+  font-size: 2rem; color: var(--primary);
+  letter-spacing: 0.02em;
+}
+.co-close {
+  position: absolute; top: 1.8rem; right: 2rem;
+  font-family: 'Fira Code', monospace; font-size: 0.78rem;
+  color: var(--text2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.4rem 1rem;
+  background: var(--surface); cursor: pointer;
+  transition: all 0.2s; pointer-events: all;
+}
+.co-close:hover { border-color: var(--primary); color: var(--primary); }
+.profile-img {
+  width: 280px;          /* ปรับขนาดตามต้องการ */
+  height: 280px;
+  object-fit: cover;     /* สำคัญ: เพื่อไม่ให้รูปเบี้ยว */
+  border-radius: 50%;    /* ทำรูปทรงกลม */
+  border: 4px solid var(--primary); /* เพิ่มเส้นขอบสีหลักของเว็บ */
+  box-shadow: 0 10px 30px var(--glow); /* เพิ่มเงาให้ดูมีมิติ */
+}
+/* ─── Fade-in animation ─── */
+.fade-in { animation: fadeUp 0.6s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.fade-in-d1 { animation-delay: 0.1s; }
+.fade-in-d2 { animation-delay: 0.2s; }
+.fade-in-d3 { animation-delay: 0.3s; }
+.fade-in-d4 { animation-delay: 0.4s; }
+.fade-in-d5 { animation-delay: 0.5s; }
+/* บังคับให้ข้อความพิมพ์ดีดไม่ตัดบรรทัด */
+#typed-text {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 2.4rem !important; /* เล็กลงพอดีกับจอมือถือแต่ยังดูเด่น */
+    letter-spacing: -0.03em;
+  }
+  .typed-cursor {
+    height: 2.2rem;
+    width: 8px;
+  }
+}
+
+/* สำหรับหน้าจอกลางๆ เช่น Tablet หรือมือถือจอใหญ่ */
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 1.7rem !important; /* ลดขนาดลงอีกนิดเพื่อให้ Cursor มีที่หายใจ */
+    }
+}
