@@ -118,40 +118,43 @@ function renderWorks() {
   workData.forEach((w, i) => {
     const isEn = currentLang === 'en';
     const title = isEn ? w.title_en : w.title_th;
-    const sub = isEn ? w.sub_en : w.sub_th;
-    const desc = isEn ? w.desc_en : w.desc_th;
+    const sub   = isEn ? w.sub_en   : w.sub_th;
+    const desc  = isEn ? w.desc_en  : w.desc_th;
     const endLabel = w.ongoing ? (isEn ? 'Present' : 'ปัจจุบัน') : formatDate(w.end);
     const duration = daysAgo(w.start, w.ongoing ? null : w.end);
 
-    const titleHtml = w.url
-      ? `<div class="work-title work-title-link" onclick="openCompany(${i})" title="Visit website">${title} <span class="work-link-icon">↗</span></div>`
-      : `<div class="work-title">${title}</div>`;
+    const extBtn = w.url
+      ? `<button class="work-ext-btn" onclick="openCompany(${i})" title="Visit website">&#x2197;</button>`
+      : '';
+
+    const titleCls = w.url ? 'work-title work-title-link' : 'work-title';
+    const titleClick = w.url ? `onclick="openCompany(${i})"` : '';
+
+    const durationBadge = w.ongoing
+      ? `<div class="counter-badge">&#x23F1; <span class="counter-num">${duration}</span> ${isEn?'active':'ดำเนินการ'}</div>`
+      : `<div class="counter-badge">&#x2713; <span class="counter-num">${duration}</span></div>`;
 
     grid.innerHTML += `
-    <div class="work-card fade-in" style="animation-delay:${i * 0.12}s">
-      <div class="work-tag">${w.tag}</div>
-      ${titleHtml}
+    <div class="work-card fade-in" style="animation-delay:${i * 0.1}s">
+      <div class="work-card-header">
+        <div class="work-tag">${w.tag}</div>
+        ${extBtn}
+      </div>
+      <div class="${titleCls}" ${titleClick}>${title}</div>
       <div class="work-sub">${sub}</div>
       <div class="work-desc">${desc}</div>
-      <div style="display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1rem;">
+      <div class="work-chips-row">
         ${w.skills.map(s=>`<span class="chip">${s}</span>`).join('')}
-        ${w.internship ? `<span class="chip chip-intern">✦ Internship</span>` : ''}
+        ${w.internship ? `<span class="chip chip-intern">&#x2736; Intern</span>` : ''}
       </div>
       <div class="work-meta">
-        <div class="work-date-row"><span class="dot">▸</span> ${isEn?'Started':'เริ่ม'}: ${formatDate(w.start)}</div>
-        <div class="work-date-row"><span class="dot">▸</span> ${isEn?'End':'สิ้นสุด'}: ${endLabel}</div>
-        ${w.salary ? `<div class="work-date-row"><span class="dot">▸</span> ${isEn?'Salary':'เงินเดือน'}: ${w.salary}</div>` : ''}
+        <div class="work-date-row">
+          <span class="dot">&#x25CF;</span>
+          ${formatDate(w.start)} &rarr; ${endLabel}
+        </div>
+        ${w.salary ? `<div class="work-date-row"><span class="dot">&#x25CF;</span>${w.salary}</div>` : ''}
+        ${durationBadge}
       </div>
-      ${w.ongoing ? `
-        <div class="counter-badge">
-          ⏱ <span class="counter-num">${duration}</span>
-          <span>${isEn?'active':'ดำเนินการ'}</span>
-        </div>` : `
-        <div class="counter-badge">
-          ✓ <span class="counter-num">${duration}</span>
-          <span>${isEn?'duration':'ระยะเวลา'}</span>
-        </div>`
-      }
     </div>`;
   });
 }
