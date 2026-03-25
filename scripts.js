@@ -51,13 +51,13 @@ workData = [
     title_th: 'ซัน เจนเนอรัล',
     sub_en: 'IT Support / IT Assistant',
     sub_th: 'IT Support / IT Assistant',
-    desc_en: 'Responsible for computer maintenance (Fix Condition), printer & scanner management, and operating CNC machines and laser cutting equipment.',
-    desc_th: 'รับผิดชอบซ่อมบำรุงคอมพิวเตอร์ ดูแลเครื่องพิมพ์และเครื่องสแกน รวมถึงใช้งานเครื่อง CNC และเลเซอร์',
+    desc_en: 'Responsible for computer maintenance (Fix Condition), printer and scanner management',
+    desc_th: 'รับผิดชอบซ่อมบำรุงคอมพิวเตอร์ ดูแลเครื่องพิมพ์และเครื่องสแกน',
     start: new Date('2022-03-01'),
     end: new Date('2022-06-30'),
     ongoing: false,
     salary: '14,000 ฿',
-    skills: ['IT Support', 'Computer Repair', 'CNC', 'Laser Machine', 'Printer/Scanner']
+    skills: ['IT Support', 'Computer Repair', 'Printer/Scanner']
   },
   {
     tag: 'Electrical / IoT Install',
