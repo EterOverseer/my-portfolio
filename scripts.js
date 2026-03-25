@@ -32,7 +32,7 @@ typeLoop();
 workData = [
   {
     tag: 'IT Support',
-    title_en: 'Mahakij Rubber Co., Ltd',
+    title_en: 'Mahakit Rubber Co., Ltd',
     title_th: 'บริษัท มหากิจรับเบอร์',
     sub_en: 'IT Support',
     sub_th: 'IT Support',
@@ -57,7 +57,7 @@ workData = [
     end: new Date('2022-06-30'),
     ongoing: false,
     salary: '14,000 ฿',
-    skills: ['IT Support', 'Computer Repair', 'Printer/Scanner']
+    skills: ['IT Support', 'Computer Repair', 'Etc...']
   },
   {
     tag: 'Electrical / IoT Install',
