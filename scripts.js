@@ -43,7 +43,8 @@ workData = [
     ongoing: true,
     salary: null,
     internship: false,
-    skills: ['IT Support']
+    skills: ['IT Support'],
+    url: 'https://mahakitrubberbands.com/'
   },
   {
     tag: 'IT Support / Hardware',
@@ -57,7 +58,8 @@ workData = [
     end: new Date('2022-06-30'),
     ongoing: false,
     salary: '14,000 ฿',
-    skills: ['IT Support', 'Computer Repair', 'Etc...']
+    skills: ['IT Support', 'Computer Repair', 'Etc...'],
+    url: 'https://www.sungenn.com/'
   },
   {
     tag: 'Electrical / IoT Install',
@@ -72,7 +74,8 @@ workData = [
     ongoing: false,
     salary: null,
     internship: true,
-    skills: ['General Technician']
+    skills: ['General Technician'],
+    url: 'https://www.facebook.com/autometicgate/?locale=th_TH'
   },
   {
     tag: 'Energy / Industrial IoT',
@@ -87,7 +90,8 @@ workData = [
     ongoing: false,
     salary: null,
     internship: true,
-    skills: ['Electrical Technician']
+    skills: ['Electrical Technician'],
+    url: 'https://www.egco.com/en/home'
   }
 ];
 
@@ -119,10 +123,14 @@ function renderWorks() {
     const endLabel = w.ongoing ? (isEn ? 'Present' : 'ปัจจุบัน') : formatDate(w.end);
     const duration = daysAgo(w.start, w.ongoing ? null : w.end);
 
+    const titleHtml = w.url
+      ? `<div class="work-title work-title-link" onclick="openCompany(${i})" title="Visit website">${title} <span class="work-link-icon">↗</span></div>`
+      : `<div class="work-title">${title}</div>`;
+
     grid.innerHTML += `
     <div class="work-card fade-in" style="animation-delay:${i * 0.12}s">
       <div class="work-tag">${w.tag}</div>
-      <div class="work-title">${title}</div>
+      ${titleHtml}
       <div class="work-sub">${sub}</div>
       <div class="work-desc">${desc}</div>
       <div style="display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1rem;">
@@ -148,16 +156,66 @@ function renderWorks() {
   });
 }
 
-/* Working status pulled from works data */
+/* Company warp — reuses the contact overlay mechanic */
+function openCompany(idx) {
+  const w = workData[idx];
+  if (!w || !w.url) return;
+
+  const isEn = currentLang === 'en';
+  const name = isEn ? w.title_en : w.title_th;
+  const color = '#38b6ff';
+
+  const logoEl  = document.getElementById('co-logo');
+  const nameEl  = document.getElementById('co-name');
+  const overlay = document.getElementById('contact-overlay');
+
+  logoEl.innerHTML = '🏢';
+  logoEl.style.color = color;
+  logoEl.style.borderColor = color + '44';
+  logoEl.style.boxShadow = `0 8px 40px ${color}33`;
+  nameEl.textContent = name;
+  nameEl.style.color = color;
+  document.getElementById('co-detail').textContent = w.url.replace(/^https?:\/\//, '');
+
+  const waitEl = overlay.querySelector('.co-waiting');
+  waitEl.innerHTML = `Opening <strong>${name}</strong> in <span id="co-countdown" style="font-size:1.4rem;font-weight:800;color:${color};min-width:1.2ch;display:inline-block;text-align:center;">3</span><span class="dots"><span></span><span></span><span></span></span>`;
+
+  history.pushState({ contact: 'company' }, '', '#contact');
+  overlay.classList.add('open');
+
+  let count = 3;
+  clearInterval(_countdownTimer);
+  _countdownTimer = setInterval(() => {
+    count--;
+    const cdEl = document.getElementById('co-countdown');
+    if (cdEl) cdEl.textContent = count;
+    if (count <= 0) {
+      clearInterval(_countdownTimer);
+      window.open(w.url, '_blank');
+      setTimeout(closeContactOverlay, 600);
+    }
+  }, 1000);
+
+  document.addEventListener('keydown', _escClose);
+}
+
+
 function updateWorkStatus() {
   const ongoing = workData.filter(w => w.ongoing);
   const el = document.getElementById('work-status');
+  const badge = el ? el.closest('.status-badge') : null;
   if (ongoing.length) {
     const isEn = currentLang === 'en';
     const names = ongoing.map(w => isEn ? w.title_en : w.title_th).join(', ');
     el.textContent = (isEn ? 'Working on: ' : 'กำลังทำ: ') + names;
+    if (badge) {
+      badge.style.cursor = 'pointer';
+      badge.title = 'Visit website';
+      badge.onclick = () => { const idx = workData.findIndex(w => w.ongoing); if (idx !== -1) openCompany(idx); };
+    }
   } else {
     el.textContent = currentLang === 'en' ? 'Open to new projects' : 'พร้อมรับงานใหม่';
+    if (badge) { badge.style.cursor = 'default'; badge.onclick = null; badge.title = ''; }
   }
 }
 
@@ -309,11 +367,29 @@ function setLang(lang) {
 /* ══════════════════════════════════════════
    THEME
 ══════════════════════════════════════════ */
-function toggleTheme() {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.getElementById('theme-btn').textContent = isDark ? '☀ Light' : '☾ Dark';
+let _userOverrideTheme = false; // true = user manually picked, skip auto
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-btn').textContent = theme === 'dark' ? '☾ Dark' : '☀ Light';
 }
+
+function autoThemeByTime() {
+  if (_userOverrideTheme) return;
+  const hour = new Date().getHours();
+  // 6:00 – 17:59 = light, else dark
+  applyTheme(hour >= 6 && hour < 18 ? 'light' : 'dark');
+}
+
+function toggleTheme() {
+  _userOverrideTheme = true;
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  applyTheme(isDark ? 'light' : 'dark');
+}
+
+// Run once on load, then check every minute
+autoThemeByTime();
+setInterval(autoThemeByTime, 60 * 1000);
 
 /* ══════════════════════════════════════════
    CONTACT OVERLAY

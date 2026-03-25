@@ -205,8 +205,9 @@ nav {
   border: 1px solid var(--border); border-radius: 20px;
   background: var(--surface);
   font-family: 'Fira Code', monospace; font-size: 0.78rem;
-  color: var(--text2);
+  color: var(--text2); transition: border-color 0.2s, box-shadow 0.2s;
 }
+.status-badge:hover { border-color: var(--primary); box-shadow: 0 4px 16px var(--glow); }
 .status-dot {
   width: 8px; height: 8px; border-radius: 50%;
   background: #22c55e;
@@ -331,6 +332,16 @@ nav {
   font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.35rem;
   color: var(--text); margin-bottom: 0.5rem;
 }
+.work-title-link {
+  cursor: pointer; transition: color 0.2s;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.work-title-link:hover { color: var(--primary); }
+.work-link-icon {
+  font-size: 0.85rem; opacity: 0.5; transition: opacity 0.2s, transform 0.2s;
+  display: inline-block;
+}
+.work-title-link:hover .work-link-icon { opacity: 1; transform: translate(2px,-2px); }
 .work-sub {
   font-size: 0.82rem; color: var(--text2);
   font-family: 'Fira Code', monospace; margin-bottom: 1rem;
