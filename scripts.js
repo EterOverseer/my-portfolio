@@ -393,32 +393,20 @@ setInterval(autoThemeByTime, 60 * 1000);
 /* ══════════════════════════════════════════
    CONTACT OVERLAY
 ══════════════════════════════════════════ */
+const _SVG = {
+  github:   `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>`,
+  facebook: `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>`,
+  line:     `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>`,
+  tel:      `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`,
+  email:    `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>`
+};
+
 const contactData = {
-  github: {
-    logo: `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>`,
-    name: 'GitHub', label: 'github', color: '#333', detail: 'github.com/EterOverseer',
-    url: 'https://github.com/EterOverseer'
-  },
-  facebook: {
-    logo: `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>`,
-    name: 'Facebook', label: 'facebook', color: '#1877f2', detail: 'facebook.com/ferm.dra…',
-    url: 'https://www.facebook.com/ferm.dra.kxn.si.ri.khxn.ne.khchan'
-  },
-  line: {
-    logo: `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>`,
-    name: 'Line', label: 'line', color: '#00b900', detail: 'ID: controllegendleader',
-    url: 'https://line.me/ti/p/~controllegendleader'
-  },
-  tel: {
-    logo: `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`,
-    name: 'Tel', label: 'tel', color: '#22c55e', detail: '066-132-6968',
-    url: 'tel:0661326968'
-  },
-  email: {
-    logo: `<svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
-    name: 'Email', label: 'email', color: '#ea4335', detail: 'fz.eteroverseer@gmail.com',
-    url: 'mailto:fz.eteroverseer@gmail.com'
-  }
+  github:   { logo: _SVG.github,   name: 'GitHub',   color: '#6e40c9', detail: 'github.com/EterOverseer',   url: 'https://github.com/EterOverseer' },
+  facebook: { logo: _SVG.facebook, name: 'Facebook',  color: '#1877f2', detail: 'facebook.com/ferm.dra…',    url: 'https://www.facebook.com/ferm.dra.kxn.si.ri.khxn.ne.khchan' },
+  line:     { logo: _SVG.line,     name: 'Line',      color: '#00b900', detail: 'line.me/ti/p/F8rfvDc4aN',   url: 'https://line.me/ti/p/F8rfvDc4aN' },
+  tel:      { logo: _SVG.tel,      name: 'Tel',       color: '#22c55e', detail: '066-132-6968',               url: 'tel:0661326968' },
+  email:    { logo: _SVG.email,    name: 'Email',     color: '#ea4335', detail: 'fz.eteroverseer@gmail.com',  url: 'mailto:fz.eteroverseer@gmail.com' }
 };
 
 let _countdownTimer = null;
@@ -427,47 +415,68 @@ function openContact(platform) {
   const data = contactData[platform];
   if (!data) return;
 
+  const overlay  = document.getElementById('contact-overlay');
   const logoEl   = document.getElementById('co-logo');
   const nameEl   = document.getElementById('co-name');
-  const labelEl  = document.getElementById('co-label');
-  const overlay  = document.getElementById('contact-overlay');
+  const detailEl = document.getElementById('co-detail');
   const waitEl   = overlay.querySelector('.co-waiting');
 
-  // Set content
-  logoEl.innerHTML = data.logo;
-  logoEl.style.color = data.color;
-  logoEl.style.borderColor = data.color + '44';
-  logoEl.style.boxShadow = `0 8px 40px ${data.color}33`;
-  nameEl.textContent = data.name;
-  nameEl.style.color = data.color;
-  labelEl.textContent = data.label;
-  document.getElementById('co-detail').textContent = data.detail || '';
+  // ── Fill overlay ──
+  logoEl.innerHTML       = data.logo;
+  logoEl.style.color       = data.color;
+  logoEl.style.borderColor = data.color + '55';
+  logoEl.style.boxShadow   = `0 8px 40px ${data.color}44`;
+  nameEl.textContent     = data.name;
+  nameEl.style.color     = data.color;
+  detailEl.textContent   = data.detail || '';
 
-  // Reset countdown UI
-  waitEl.innerHTML = `Opening <strong id="co-platform-word">${data.name}</strong> in <span id="co-countdown" style="font-size:1.4rem;font-weight:800;color:${data.color};min-width:1.2ch;display:inline-block;text-align:center;">3</span><span class="dots"><span></span><span></span><span></span></span>`;
+  // ── Countdown UI ──
+  waitEl.innerHTML = `
+    <span>Opening</span>
+    <strong style="color:${data.color}">${data.name}</strong>
+    <span>in</span>
+    <span id="co-countdown" style="
+      font-size:1.7rem;font-weight:900;
+      color:${data.color};
+      min-width:1.6ch;display:inline-block;text-align:center;
+      transition:transform .12s ease,opacity .12s ease;
+    ">3</span>
+    <span class="dots"><span></span><span></span><span></span></span>
+  `;
 
-  // Push a history state so browser back button works
   history.pushState({ contact: platform }, '', '#contact');
-
-  // Trigger sweep open
   overlay.classList.add('open');
 
-  // Countdown 3 → 2 → 1 → open
+  // ── Tick every 1 s: 3 → 2 → 1 → 🚀 → warp ──
   let count = 3;
   clearInterval(_countdownTimer);
-  _countdownTimer = setInterval(() => {
+
+  function tick() {
     count--;
     const cdEl = document.getElementById('co-countdown');
-    if (cdEl) cdEl.textContent = count;
+    if (!cdEl) { clearInterval(_countdownTimer); return; }
+
+    // Bounce out
+    cdEl.style.transform = 'scale(1.6)';
+    cdEl.style.opacity   = '0.2';
+
+    setTimeout(() => {
+      cdEl.textContent     = count > 0 ? String(count) : '🚀';
+      cdEl.style.transform = 'scale(1)';
+      cdEl.style.opacity   = '1';
+    }, 130);
+
     if (count <= 0) {
       clearInterval(_countdownTimer);
-      if (data.url) window.open(data.url, '_blank');
-      // Auto-close overlay after redirect
-      setTimeout(closeContactOverlay, 600);
+      // Small pause so user sees 🚀 then warp
+      setTimeout(() => {
+        window.open(data.url, '_blank');
+        setTimeout(closeContactOverlay, 400);
+      }, 380);
     }
-  }, 1000);
+  }
 
-  // Keyboard close
+  _countdownTimer = setInterval(tick, 1000);
   document.addEventListener('keydown', _escClose);
 }
 
