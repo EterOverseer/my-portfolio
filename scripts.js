@@ -267,7 +267,7 @@ function navigate(page) {
     const target = document.getElementById(page === 'freesource' ? 'freesource' : page);
     if (target) target.classList.add('active');
 
-    const navBtn = document.getElementById('nav-' + (page === 'freesource' ? 'about' : page));
+    const navBtn = document.getElementById('nav-' + page);
     if (navBtn) navBtn.classList.add('active');
 
     currentPage = page;
@@ -358,7 +358,7 @@ function setLang(lang) {
     if (el) el.textContent = val;
   });
 
-  // nav buttons
+  // nav buttons (including freesource)
   document.querySelectorAll('.nav-links button').forEach(b => {
     b.textContent = lang === 'th' ? b.dataset.th : b.dataset.en;
   });

@@ -644,9 +644,92 @@ nav {
   }
 }
 
-/* สำหรับหน้าจอกลางๆ เช่น Tablet หรือมือถือจอใหญ่ */
+/* ══════════════════════════════════════════
+   Responsive & Mobile Optimization
+══════════════════════════════════════════ */
+@media(max-width: 768px) {
+  /* 1. เปลี่ยน Layout หน้า Home เป็นแนวตั้ง และดึงรูปขึ้นบนสุด */
+  .home-inner { 
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem 1rem; /* ลดพื้นที่ว่างด้านบน */
+    gap: 1.5rem; 
+  }
+  
+  .home-right { 
+    order: -1; /* สั่งให้อยู่ส่วนบนสุด */
+    align-items: center; 
+    gap: 1rem;
+  }
+
+  /* 2. ย่อขนาดรูป Avatar ให้กะทัดรัดขึ้น */
+  .avatar-wrap { width: 140px; height: 140px; }
+  .avatar-ring { inset: -8px; border-width: 2px; }
+  
+  /* 3. จัดข้อความฝั่งซ้ายให้อยู่กึ่งกลาง */
+  .home-left { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+  }
+  
+  .vibe-tag { justify-content: center; margin-bottom: 0.3rem; }
+  .vibe-tag::before { display: none; } /* ซ่อนเส้นขีดเพื่อความสมมาตร */
+  
+  .main-title { 
+    font-size: 2.2rem !important; 
+    justify-content: center; 
+    margin-bottom: 0;
+  }
+  
+  .status-badge { margin-top: 0.5rem; }
+  
+  .home-desc { 
+    font-size: 0.85rem; 
+    margin-top: 1rem; 
+    margin-bottom: 1.5rem;
+    max-width: 90%;
+  }
+
+  /* 4. ปรับปุ่ม Contact ให้เป็น Icon วงกลมแบบมินิมอล */
+  .contact-section { margin-top: 0.5rem; width: 100%; }
+  .contact-label { text-align: center; margin-bottom: 0.8rem; }
+  .contact-links { justify-content: center; gap: 0.8rem; }
+  
+  .contact-btn {
+    padding: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%; /* ทำปุ่มกลม */
+    justify-content: center;
+  }
+  .contact-btn span:not(.icon) { 
+    display: none; /* ซ่อนข้อความชื่อ Social เก็บไว้แค่ Icon */
+  }
+  .contact-btn .icon { font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+
+  /* 5. จัดชิป Skill ให้อยู่ตรงกลาง */
+  .skill-chips { justify-content: center; max-width: 100%; }
+
+  /* 6. ปรับหน้าอื่นๆ ให้กระชับ */
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .info-grid { grid-template-columns: 1fr; gap: 0.8rem; }
+  .section-inner, .about-inner { padding: 3rem 1.5rem 1.5rem; }
+  .nav-links button { font-size: 0.75rem; padding: 0.3rem 0.5rem; }
+}
+
 @media (max-width: 480px) {
-    .main-title {
-        font-size: 1.7rem !important; /* ลดขนาดลงอีกนิดเพื่อให้ Cursor มีที่หายใจ */
-    }
+  /* ปรับแต่งสำหรับจอมือถือที่เล็กมากๆ (iPhone SE, หน้าจอเล็ก) */
+  .main-title { 
+    font-size: 1.8rem !important; 
+    letter-spacing: -0.02em; 
+  }
+  .typed-cursor { 
+    height: 1.6rem; 
+    width: 6px; 
+    margin-left: 4px;
+  }
+  .avatar-wrap { width: 120px; height: 120px; }
+  .home-desc { font-size: 0.8rem; }
 }
