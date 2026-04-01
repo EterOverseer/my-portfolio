@@ -322,7 +322,7 @@ const translations = {
     'about-info-label': 'ข้อมูลส่วนตัว',
     'about-tools-label': 'ทักษะและเครื่องมือ',
     'about-bio-label': 'ประวัติ',
-    'about-bio': 'จบ ปวส. อิเล็กทรอนิกส์ (เกรด 3.81) จากวิทยาลัยเทคนิคบ้านค่าย ถนัดด้าน Programming & IT เขียนโปรแกรม Microcontroller ด้วย C, Python, MicroPython ดึงข้อมูล PLC ผ่าน RS-232 และมีความรู้ด้าน Factory Sensor เคยแข่ง IoT 4 ครั้ง รวมถึง Hackatron 2023 และ Future Innovation 2024 และแข่ง Eng 12 ครั้งตั้งแต่ประถม พร้อมเรียนรู้และปรับตัวเสมอ ⚡',
+    'about-bio': 'จบ ปวส. อิเล็กทรอนิกส์ (เกรด 3.81) จากวิทยาลัยเทคนิคบ้านค่าย ถนัดด้าน สายวิเคราะห์ Programming & IT เขียนโปรแกรม Microcontroller ด้วย html,css,js,c และมีความรู้ด้าน Factory Sensor , Computer Problem Analyze เคยแข่ง IoT 4 ครั้ง รวมถึง Hackatron 2023 และ Future Innovation 2024 และแข่ง Eng 12 ครั้งตั้งแต่ประถม พร้อมเรียนรู้และปรับตัวเสมอ ⚡',
     'key-name': 'ชื่อ-นามสกุล',
     'key-dob': 'วันเกิด',
     'val-dob': '10 ตุลาคม 2546',
