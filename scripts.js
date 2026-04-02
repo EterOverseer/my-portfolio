@@ -6,9 +6,9 @@ let currentPage = 'home';
 let workData = [];
 
 /* ══════════════════════════════════════════
-   TYPED TEXT
+   TYPED TEXTs
 ══════════════════════════════════════════ */
-const words = ['IOT Developer', 'Vibe Coder', 'Creator'];
+const words = ['IOT Developer','IT Support', 'Vibe Coder'];
 let wi = 0, ci = 0, deleting = false;
 function typeLoop() {
   const el = document.getElementById('typed-text');
