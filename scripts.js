@@ -95,9 +95,32 @@ workData = [
   }
 ];
 
-function daysAgo(start, end) {
-  const now = end || new Date();
-  const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+/* ══════════════════════════════════════════
+   GITHUB PROJECTS
+══════════════════════════════════════════ */
+async function fetchGithubProjects() {
+    try {
+        const response = await fetch('https://api.github.com/users/EterOverseer/repos?type=public&sort=updated');
+        const repos = await response.json();
+        const container = document.getElementById('projects-container');
+        if (!container) return;
+
+        container.innerHTML = repos.map(repo => `
+            <div class="project-card" style="background: var(--surface); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); transition: 0.3s;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">${repo.name}</h3>
+                <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1rem;">${repo.description || 'No description available.'}</p>
+                <div class="project-links">
+                    <a href="${repo.html_url}" target="_blank" style="color: var(--accent); text-decoration: none; margin-right: 10px;">View Code</a>
+                    <a href="${repo.html_url}/archive/refs/heads/master.zip" style="background: var(--primary); color: var(--btn-text); padding: 5px 12px; border-radius: 6px; text-decoration: none; font-size: 0.8rem;">Download</a>
+                </div>
+            </div>
+        `).join('');
+    } catch (e) {
+        console.error('Failed to fetch projects', e);
+    }
+}
+fetchGithubProjects();
+
   const years = Math.floor(diff / 365);
   const months = Math.floor((diff % 365) / 30);
   const days = diff % 30;

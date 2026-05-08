@@ -1,23 +1,23 @@
-/* ─── CSS Variables ─── */
+/* ─── CSS Variables (Modern Dark Theme) ─── */
 :root {
-  --bg: #f5f8ff;
-  --bg2: #eaf1ff;
-  --surface: #ffffff;
-  --surface2: #ddeeff;
-  --primary: #1560bd;
+  --bg: #0a0a0a;
+  --bg2: #121212;
+  --surface: #1e1e1e;
+  --surface2: #252525;
+  --primary: #38b6ff;
   --accent: #38b6ff;
   --accent2: #0099e6;
-  --text: #0d1b2a;
-  --text2: #3a5070;
-  --border: rgba(21,96,189,0.18);
-  --glow: rgba(56,182,255,0.25);
-  --nav-bg: rgba(245,248,255,0.85);
-  --card-bg: #ffffff;
-  --card-border: rgba(21,96,189,0.13);
-  --btn-bg: #1560bd;
-  --btn-text: #fff;
-  --tag-bg: rgba(56,182,255,0.15);
-  --tag-text: #1560bd;
+  --text: #e0e0e0;
+  --text2: #a0a0a0;
+  --border: rgba(56, 182, 255, 0.1);
+  --glow: rgba(56, 182, 255, 0.15);
+  --nav-bg: rgba(10, 10, 10, 0.9);
+  --card-bg: #1e1e1e;
+  --card-border: rgba(255, 255, 255, 0.05);
+  --btn-bg: #38b6ff;
+  --btn-text: #000;
+  --tag-bg: rgba(56, 182, 255, 0.1);
+  --tag-text: #38b6ff;
   --hero-overlay: linear-gradient(135deg,#eaf1ff 60%,#c2e4ff 100%);
   --transition: 0.35s cubic-bezier(.4,0,.2,1);
 }
