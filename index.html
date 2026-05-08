@@ -10,55 +10,38 @@
 </head>
 <body>
 <div id="contact-overlay">
-  <div class="sweep"></div>
   <div class="co-card">
     <button class="co-close" onclick="closeContactOverlay()">✕ close</button>
-    <div class="co-platform-logo" id="co-logo">📧</div>
-    <div class="co-platform-name" id="co-name">Email</div>
-    <div class="co-detail" id="co-detail" style="font-family:'Fira Code',monospace;font-size:1rem;color:var(--text);letter-spacing:0.04em;margin-top:-0.5rem;"></div>
     <div class="co-waiting">
       Waiting for <span id="co-label">email</span>
       <span class="dots"><span></span><span></span><span></span></span>
-    </div>
-  </div>
-</div>
 <div id="page-transition">
-  <div class="logo-anim" id="trans-logo">SP</div>
-  <div class="name-anim" id="trans-name">Saharat Poonok</div>
-</div>
 <nav>
   <div class="nav-logo">
     <span style="color:var(--primary)">Eter</span><span>Overseer</span>
-  </div>
   <div class="nav-links">
     <button class="active" onclick="navigate('home')" id="nav-home" data-en="Home" data-th="หน้าหลัก">Home</button>
     <button onclick="navigate('works')" id="nav-works" data-en="Works" data-th="ผลงาน">Works</button>
     <button onclick="navigate('freesource')" id="nav-freesource" data-en="Free Source" data-th="ซอร์สฟรี">Free Source</button>
     <button onclick="navigate('about')" id="nav-about" data-en="About Me" data-th="เกี่ยวกับ">About Me</button>
-  </div>
   <div class="nav-controls">
     <button class="ctrl-btn active" id="lang-en" onclick="setLang('en')">EN</button>
     <button class="ctrl-btn" id="lang-th" onclick="setLang('th')">TH</button>
     <button class="ctrl-btn" id="theme-btn" onclick="toggleTheme()">☀ Light</button>
-  </div>
 </nav>
 
 <section id="home" class="page active" style="padding-top: 100px; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
   <div class="home-inner">
     <div class="home-left">
-      <div class="vibe-tag fade-in">vibe coder</div>
       <div class="main-title fade-in fade-in-d1">
         <span id="typed-text"></span><span class="typed-cursor"></span>
-      </div>
       <div class="status-badge fade-in fade-in-d2">
         <span class="status-dot"></span>
         <span id="work-status">Loading status…</span>
-      </div>
       <p class="home-desc fade-in fade-in-d3" id="home-desc">
         Passionate developer specializing in IoT, embedded systems, and Linux environments. Building smart solutions that bridge hardware and software.
       </p>
       <div class="contact-section fade-in fade-in-d4">
-        <div class="contact-label" id="contact-label">Contact & Socials</div>
         <div class="contact-links">
           <button class="contact-btn" onclick="openContact('github')">
             <span class="icon">
@@ -90,22 +73,10 @@
             </span>
             <span>Email</span>
           </button>
-        </div>
-      </div>
-    </div>
     <div class="home-right fade-in fade-in-d2">
       <div class="avatar-wrap">
-        <div class="avatar-ring"></div>
         <div class="avatar-inner">
            <img src="/pic/ProfilePic.jpg" alt="Profile" class="profile-img-main">
-        </div>
-      </div>
-      <div id="projects-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 2rem;">
-        <!-- Projects will be injected here -->
-      </div>
-    </div>
-        </div>
-      </div>
       <div class="skill-chips">
         <span class="chip">Linux · Arch</span>
         <span class="chip">Game Seller</span>
@@ -116,88 +87,38 @@
         <span class="chip">VSCode</span>
         <span class="chip">IoT</span>
         <span class="chip">GitHub</span>
-      </div>
-    </div>
-  </div>
 </section>
 
 <section id="works" class="page">
   <div class="section-inner">
     <div class="section-header">
-      <div class="section-eyebrow fade-in" id="works-eyebrow">Selected Projects</div>
       <h2 class="section-title fade-in fade-in-d1" id="works-title">Works</h2>
-    </div>
     <div class="works-grid" id="works-grid">
-      </div>
-  </div>
 </section>
 
 <section id="about" class="page">
   <div class="about-inner">
     <div class="section-header">
-      <div class="section-eyebrow fade-in" id="about-eyebrow">Who I Am</div>
       <h2 class="section-title fade-in fade-in-d1" id="about-title">About Me</h2>
-    </div>
     <div class="about-grid">
       <div class="about-left">
         <div class="profile-card fade-in">
           <div class="profile-avatar">
              <img src="/pic/ProfilePic.jpg" alt="Profile" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
-          </div>
-          <div class="profile-name">Saharat Poonok</div>
-          <div class="profile-name-th">นาย สหรัฐ ภูนอก</div>
-          <div class="profile-badge">ปวส. อิเล็กทรอนิกส์ · GPA 3.81</div>
           <div class="profile-logos">
-            <div class="tech-logo" title="Linux / Arch">🐧</div>
             <div class="tech-logo" title="GitHub">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            </div>
-            <div class="tech-logo" title="n8n">⚡</div>
-            <div class="tech-logo" title="Arduino">🔌</div>
-            <div class="tech-logo" title="VSCode">🖥</div>
-            <div class="tech-logo" title="MariaDB">🗄</div>
-            <div class="tech-logo" title="CasaOS">🏠</div>
-            <div class="tech-logo" title="Python">🐍</div>
-            <div class="tech-logo" title="MicroPython">🔬</div>
-          </div>
-        </div>
-      </div>
       <div class="about-right">
         <div class="about-section fade-in">
-          <div class="about-section-label" id="about-info-label">Personal Info</div>
           <div class="info-grid">
             <div class="info-item">
-              <div class="info-key" id="key-name">Full Name (TH)</div>
-              <div class="info-val">นาย สหรัฐ ภูนอก</div>
-            </div>
             <div class="info-item">
-              <div class="info-key" id="key-dob">Date of Birth</div>
-              <div class="info-val" id="val-dob">10 Oct 2003</div>
-            </div>
             <div class="info-item">
-              <div class="info-key" id="key-edu">Education</div>
-              <div class="info-val" id="val-edu">ปวส. Electronics · GPA 3.81</div>
-            </div>
             <div class="info-item">
-              <div class="info-key" id="key-school">Institute</div>
-              <div class="info-val" id="val-school">วิทยาลัยเทคนิคบ้านค่าย</div>
-            </div>
             <div class="info-item">
-              <div class="info-key" id="key-focus">Focus</div>
-              <div class="info-val" id="val-focus">IT Support · IoT · Programming</div>
-            </div>
             <div class="info-item">
-              <div class="info-key" id="key-os">Preferred OS</div>
-              <div class="info-val">Arch Linux · Windows</div>
-            </div>
             <div class="info-item">
-              <div class="info-key" id="key-avail">Available</div>
-              <div class="info-val" id="val-avail">Within 7 days</div>
-            </div>
-          </div>
-        </div>
         <div class="about-section fade-in fade-in-d2">
-          <div class="about-section-label" id="about-tools-label">Tools & Tech Stack</div>
           <div class="skills-wrap">
             <span class="skill-tag">🐧 Arch Linux</span>
             <span class="skill-tag">🐍 C</span>
@@ -210,34 +131,26 @@
             <span class="skill-tag">🏠 CasaOS</span>
             <span class="skill-tag">📡 IoT</span>
             <span class="skill-tag">💻 IT Support</span>
-          </div>
-        </div>
         <div class="about-section fade-in fade-in-d3">
-          <div class="about-section-label" id="about-bio-label">Bio</div>
           <p style="font-size:0.9rem;color:var(--text2);line-height:1.75;" id="about-bio">
             Electronics grad (GPA 3.81) from Bankhai Technical Collage with a strong lean toward Programming &amp; IT.
             Experienced in IT Support, microcontroller coding (html,css,js,c),
             and can analyze factory sensor systems. Competed in 4 IoT competitions including Hackatron 2023 &amp; Future Innovation 2024,
             plus 12 Engineering contests since primary school. Always learning, always adapting. ⚡
           </p>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <section id="freesource" class="page">
   <div class="section-inner">
     <div class="section-header">
-      <div class="section-eyebrow fade-in">Open Resources</div>
       <h2 class="section-title fade-in fade-in-d1" id="fs-title">Free Source</h2>
       <p style="margin-top:0.8rem;font-size:0.88rem;color:var(--text2);" id="fs-desc">
         Tools, scripts & assets — more coming soon when I upload them!
       </p>
-    </div>
     <div class="fs-grid" id="fs-grid">
-      </div>
-  </div>
+        <div id="projects-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; width: 100%;">
+        </div>
+    </div>
 </section>
 
 <script src="scripts.js"></script>
