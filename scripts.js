@@ -530,3 +530,4 @@ window.addEventListener('popstate', (e) => {
    INIT
 ══════════════════════════════════════════ */
 updateWorkStatus();
+fetchGithubProjects();
