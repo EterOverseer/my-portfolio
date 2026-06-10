@@ -314,8 +314,6 @@ const translations = {
     'about-bio-label': 'Bio',
     'about-bio': 'Electronics grad (GPA 3.81) from วิทยาลัยเทคนิคบ้านค่าย with a strong lean toward Programming & IT. Experienced in IT Support, microcontroller coding (C, Python, MicroPython), PLC data extraction via RS-232, and factory sensor systems. Competed in 4 IoT competitions including Hackatron 2023 & Future Innovation 2024, plus 12 Engineering contests since primary school. Always learning, always adapting. ⚡',
     'key-name': 'Full Name (TH)',
-    'key-dob': 'Date of Birth',
-    'val-dob': '10 Oct 2003',
     'key-edu': 'Education',
     'val-edu': 'ปวส. Electronics · GPA 3.81',
     'key-school': 'Institute',
@@ -341,8 +339,6 @@ const translations = {
     'about-bio-label': 'ประวัติ',
     'about-bio': 'จบ ปวส. อิเล็กทรอนิกส์ (เกรด 3.81) จากวิทยาลัยเทคนิคบ้านค่าย ถนัดด้าน สายวิเคราะห์ Programming & IT เขียนโปรแกรม Microcontroller ด้วย html,css,js,c และมีความรู้ด้าน Factory Sensor , Computer Problem Analyze เคยแข่ง IoT 4 ครั้ง รวมถึง Hackatron 2023 และ Future Innovation 2024 และแข่ง Eng 12 ครั้งตั้งแต่ประถม พร้อมเรียนรู้และปรับตัวเสมอ ⚡',
     'key-name': 'ชื่อ-นามสกุล',
-    'key-dob': 'วันเกิด',
-    'val-dob': '10 ตุลาคม 2546',
     'key-edu': 'การศึกษา',
     'val-edu': 'ปวส. อิเล็กทรอนิกส์ · เกรด 3.81',
     'key-school': 'สถานศึกษา',
@@ -448,52 +444,78 @@ function openContact(platform) {
   detailEl.textContent   = data.detail || '';
 
   // ── Countdown UI ──
-  waitEl.innerHTML = `
-    <span>Opening</span>
-    <strong style="color:${data.color}">${data.name}</strong>
-    <span>in</span>
-    <span id="co-countdown" style="
-      font-size:1.7rem;font-weight:900;
-      color:${data.color};
-      min-width:1.6ch;display:inline-block;text-align:center;
-      transition:transform .12s ease,opacity .12s ease;
-    ">3</span>
-    <span class="dots"><span></span><span></span><span></span></span>
-  `;
+  if (platform === 'email') {
+    // Email: show address directly with copy button, no countdown
+    waitEl.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;">
+        <div style="font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--text);background:var(--surface2);padding:0.6rem 1.2rem;border-radius:8px;border:1px solid var(--border);letter-spacing:0.04em;">${data.detail}</div>
+        <div style="display:flex;gap:0.5rem;">
+          <button id="co-copy-btn" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.75rem;font-weight:600;padding:0.45rem 1rem;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;transition:all 0.2s;">📋 Copy</button>
+          <button id="co-open-btn" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.75rem;font-weight:600;padding:0.45rem 1rem;border-radius:7px;border:none;background:var(--btn-bg);color:var(--btn-text);cursor:pointer;transition:all 0.2s;">✉ Open Email</button>
+        </div>
+      </div>
+    `;
+    setTimeout(() => {
+      document.getElementById('co-copy-btn').onclick = () => {
+        navigator.clipboard.writeText(data.detail);
+        const btn = document.getElementById('co-copy-btn');
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => btn.textContent = '📋 Copy', 1500);
+      };
+      document.getElementById('co-open-btn').onclick = () => {
+        window.open(data.url, '_blank');
+        setTimeout(closeContactOverlay, 400);
+      };
+    }, 50);
+  } else {
+    // Other platforms: countdown as before
+    waitEl.innerHTML = `
+      <span>Opening</span>
+      <strong style="color:${data.color}">${data.name}</strong>
+      <span>in</span>
+      <span id="co-countdown" style="
+        font-size:1.7rem;font-weight:900;
+        color:${data.color};
+        min-width:1.6ch;display:inline-block;text-align:center;
+        transition:transform .12s ease,opacity .12s ease;
+      ">3</span>
+      <span class="dots"><span></span><span></span><span></span></span>
+    `;
+
+    // ── Tick every 1 s: 3 → 2 → 1 → 🚀 → warp ──
+    let count = 3;
+    clearInterval(_countdownTimer);
+
+    function tick() {
+      count--;
+      const cdEl = document.getElementById('co-countdown');
+      if (!cdEl) { clearInterval(_countdownTimer); return; }
+
+      // Bounce out
+      cdEl.style.transform = 'scale(1.6)';
+      cdEl.style.opacity   = '0.2';
+
+      setTimeout(() => {
+        cdEl.textContent     = count > 0 ? String(count) : '🚀';
+        cdEl.style.transform = 'scale(1)';
+        cdEl.style.opacity   = '1';
+      }, 130);
+
+      if (count <= 0) {
+        clearInterval(_countdownTimer);
+        // Small pause so user sees 🚀 then warp
+        setTimeout(() => {
+          window.open(data.url, '_blank');
+          setTimeout(closeContactOverlay, 400);
+        }, 380);
+      }
+    }
+
+    _countdownTimer = setInterval(tick, 1000);
+  }
 
   history.pushState({ contact: platform }, '', '#contact');
   overlay.classList.add('open');
-
-  // ── Tick every 1 s: 3 → 2 → 1 → 🚀 → warp ──
-  let count = 3;
-  clearInterval(_countdownTimer);
-
-  function tick() {
-    count--;
-    const cdEl = document.getElementById('co-countdown');
-    if (!cdEl) { clearInterval(_countdownTimer); return; }
-
-    // Bounce out
-    cdEl.style.transform = 'scale(1.6)';
-    cdEl.style.opacity   = '0.2';
-
-    setTimeout(() => {
-      cdEl.textContent     = count > 0 ? String(count) : '🚀';
-      cdEl.style.transform = 'scale(1)';
-      cdEl.style.opacity   = '1';
-    }, 130);
-
-    if (count <= 0) {
-      clearInterval(_countdownTimer);
-      // Small pause so user sees 🚀 then warp
-      setTimeout(() => {
-        window.open(data.url, '_blank');
-        setTimeout(closeContactOverlay, 400);
-      }, 380);
-    }
-  }
-
-  _countdownTimer = setInterval(tick, 1000);
   document.addEventListener('keydown', _escClose);
 }
 
