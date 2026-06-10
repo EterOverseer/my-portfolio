@@ -524,3 +524,138 @@ window.addEventListener('popstate', (e) => {
    INIT
 ══════════════════════════════════════════ */
 updateWorkStatus();
+
+/* ══════════════════════════════════════════
+   SCROLL REVEAL (Intersection Observer)
+══════════════════════════════════════════ */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ══════════════════════════════════════════
+   SKILL STAGGER (inside About section)
+══════════════════════════════════════════ */
+const skillsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const skills = entry.target.querySelectorAll('.skill-reveal');
+      skills.forEach((skill, i) => {
+        setTimeout(() => skill.classList.add('visible'), i * 80);
+      });
+      skillsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+const skillsWrap = document.getElementById('skills-wrap');
+if (skillsWrap) skillsObserver.observe(skillsWrap);
+
+/* ══════════════════════════════════════════
+   COUNTER ANIMATION
+══════════════════════════════════════════ */
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.counter').forEach(counter => {
+        const target = parseFloat(counter.dataset.target);
+        const decimals = parseInt(counter.dataset.decimals) || 0;
+        const duration = 1500;
+        const start = performance.now();
+        function tick(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          // easeOutExpo
+          const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+          counter.textContent = (target * eased).toFixed(decimals);
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.stats-grid').forEach(el => counterObserver.observe(el));
+
+/* ══════════════════════════════════════════
+   3D TILT ON WORK CARDS
+══════════════════════════════════════════ */
+document.addEventListener('mousemove', (e) => {
+  document.querySelectorAll('.work-card').forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 300) {
+      const rotateX = (dy / rect.height) * -8;
+      const rotateY = (dx / rect.width) * 8;
+      card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-3px)`;
+    } else {
+      card.style.transform = '';
+    }
+  });
+});
+
+/* ══════════════════════════════════════════
+   MAGNETIC CONTACT BUTTONS
+══════════════════════════════════════════ */
+document.querySelectorAll('.contact-btn').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = '';
+  });
+});
+
+/* ══════════════════════════════════════════
+   FLOATING PARTICLES
+══════════════════════════════════════════ */
+function createParticles() {
+  const container = document.getElementById('particles');
+  if (!container) return;
+  const count = window.innerWidth < 768 ? 15 : 30;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 6 + 2;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    container.appendChild(p);
+  }
+}
+createParticles();
+
+/* ══════════════════════════════════════════
+   SECTION DIVIDER (auto-insert between sections)
+══════════════════════════════════════════ */
+document.querySelectorAll('.section-header').forEach(header => {
+  const divider = document.createElement('div');
+  divider.className = 'section-divider';
+  header.after(divider);
+  const dividerObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        dividerObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  dividerObserver.observe(divider);
+});

@@ -656,6 +656,176 @@ nav {
 .fade-in-d3 { animation-delay: 0.3s; }
 .fade-in-d4 { animation-delay: 0.4s; }
 .fade-in-d5 { animation-delay: 0.5s; }
+
+/* ─── Scroll-triggered Reveal ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+.reveal-d3 { transition-delay: 0.3s; }
+.reveal-d4 { transition-delay: 0.4s; }
+.reveal-d5 { transition-delay: 0.5s; }
+
+/* ─── Skill Stagger ─── */
+.skill-reveal {
+  opacity: 0;
+  transform: scale(0.8) translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.skill-reveal.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* ─── Section Divider ─── */
+.section-divider {
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  margin: 0 auto 2rem;
+  transition: width 0.8s cubic-bezier(.4,0,.2,1);
+}
+.section-divider.visible {
+  width: 80px;
+}
+
+/* ─── Stats / Counter Section ─── */
+#stats { display: none; padding-top: 60px; min-height: 100vh; }
+#stats.active { display: block; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px var(--glow);
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+.stat-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+.stat-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 2.5rem;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.stat-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: var(--text2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── 3D Tilt on Work Cards ─── */
+.work-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  position: relative; overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  display: flex; flex-direction: column; gap: 0;
+  transform-style: preserve-3d;
+  perspective: 800px;
+}
+.work-card:hover {
+  box-shadow: 0 12px 36px var(--glow);
+  border-color: var(--primary);
+}
+
+/* ─── Magnetic Button ─── */
+.contact-btn {
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.5rem 1rem; border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.8rem; font-weight: 500;
+  color: var(--text2);
+  transition: all 0.25s;
+  position: relative; overflow: hidden;
+  will-change: transform;
+}
+
+/* ─── Floating Particles ─── */
+#particles {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.08;
+  animation: floatUp linear infinite;
+  will-change: transform;
+}
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.08;
+  }
+  90% {
+    opacity: 0.08;
+  }
+  100% {
+    transform: translateY(-10vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ─── Parallax Hero Background ─── */
+#home .home-inner {
+  position: relative;
+  z-index: 1;
+}
+#home::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(circle at 20% 50%, var(--glow) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(56,182,255,0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: heroGlow 8s ease-in-out infinite alternate;
+}
+@keyframes heroGlow {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
 /* บังคับให้ข้อความพิมพ์ดีดไม่ตัดบรรทัด */
 #typed-text {
     white-space: nowrap;
