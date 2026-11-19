@@ -1,0 +1,189 @@
+/* ══════════════════════════════════════════════════════════════
+   SWARM-REBUILD  —  Styles
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── Intro Overlay ─── */
+#swarm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: var(--bg, #050f07);
+  overflow: hidden;
+  opacity: 1;
+}
+
+/* Grid-dot background inside overlay */
+#swarm-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(0,255,136,0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  animation: swarmGridPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes swarmGridPulse {
+  from { opacity: 0.4; }
+  to   { opacity: 1;   }
+}
+
+/* Canvas sits above the grid */
+#swarm-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* ─── Hint bar (bottom) ─── */
+#swarm-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: var(--text2, #7abf7a);
+  letter-spacing: 0.15em;
+  text-transform: lowercase;
+  background: var(--surface, #0b1a0d);
+  border: 1px solid var(--border, rgba(0,255,136,0.18));
+  padding: 0.45rem 1.2rem;
+  border-radius: 20px;
+  animation: hintFadeIn 0.6s ease 0.8s both;
+  white-space: nowrap;
+}
+
+@keyframes hintFadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
+}
+
+.swarm-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent, #39ff14);
+  animation: swarmDotPulse 1.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes swarmDotPulse {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(57,255,20,0.6); }
+  50%       { box-shadow: 0 0 0 5px rgba(57,255,20,0);   }
+}
+
+/* ─── Skip button ─── */
+#swarm-skip {
+  position: absolute;
+  top: 1.4rem;
+  right: 1.8rem;
+  z-index: 10;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem;
+  color: var(--text2, #7abf7a);
+  background: var(--surface, #0b1a0d);
+  border: 1px solid var(--border, rgba(0,255,136,0.18));
+  padding: 0.35rem 0.9rem;
+  border-radius: 7px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  animation: hintFadeIn 0.6s ease 1s both;
+}
+
+#swarm-skip:hover {
+  color: var(--primary, #00ff88);
+  border-color: var(--primary, #00ff88);
+  background: var(--tag-bg, rgba(57,255,20,0.08));
+}
+
+/* ─── Animated Cursors ─── */
+.swarm-cursor {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  /* Use GPU layer for smoother movement */
+  will-change: left, top;
+  animation: cursorAppear 0.3s ease both;
+}
+
+@keyframes cursorAppear {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1);   }
+}
+
+.swarm-cursor svg {
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.swarm-cursor-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  font-weight: 600;
+  color: #000;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-top: 2px;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+/* ─── Scroll-highlight cursors ─── */
+.swarm-scroll-cursor {
+  pointer-events: none;
+  z-index: 5000;
+  will-change: left, top, opacity;
+}
+
+.swarm-scroll-cursor svg {
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+}
+
+/* ─── Light theme overrides ─── */
+[data-theme="light"] #swarm-overlay {
+  background: #f5f8ff;
+}
+
+[data-theme="light"] #swarm-overlay::before {
+  background-image:
+    radial-gradient(circle, rgba(21,96,189,0.07) 1px, transparent 1px);
+}
+
+[data-theme="light"] #swarm-hint,
+[data-theme="light"] #swarm-skip {
+  background: #ffffff;
+  color: #3a5070;
+  border-color: rgba(21,96,189,0.2);
+}
+
+[data-theme="light"] #swarm-skip:hover {
+  color: #1560bd;
+  border-color: #1560bd;
+  background: rgba(21,96,189,0.06);
+}
+
+[data-theme="light"] .swarm-dot {
+  background: #1560bd;
+  animation-name: swarmDotPulseLight;
+}
+
+@keyframes swarmDotPulseLight {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(21,96,189,0.5); }
+  50%       { box-shadow: 0 0 0 5px rgba(21,96,189,0);   }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  #swarm-overlay { display: none !important; }
+}
